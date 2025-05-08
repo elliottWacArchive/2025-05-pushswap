@@ -40,11 +40,18 @@ function find_min_index($arr)
 function push_swap(&$la, &$lb, &$output)
 {
     $pushSwap = new PushSwap($la, $lb);
+    $lenla = count($la);
     if (is_sorted($la)) {
         return;
+    } elseif ($lenla == 2) {
+        if ($la[0] > $la[1]) {
+            swap($la);
+            $output[] = 'sa';
+        }
+    } elseif ($lenla == 3) {
+        three_elements_sort($la, $output);
+        return;
     }
-    $lenla = count($la);
-
     for ($e = 0; $e < $lenla; $e++) {
         $minLa = find_min_index($la);
         $ta = count($la);
@@ -78,6 +85,36 @@ function push_swap(&$la, &$lb, &$output)
             // echo implode(' ', $lb) . "\n";
             // echo '-------------------' . "TB : tour $i/$tb\n\n";
         }
+    }
+}
+
+function three_elements_sort(&$la, &$output)
+{
+    $pushSwap = new PushSwap($la); 
+
+    if ($la[0] > $la[1] && $la[1] < $la[2] && $la[0] < $la[2]) {
+        $pushSwap->sa();
+        $output[] = 'sa';
+    }
+    else if ($la[0] > $la[1] && $la[1] < $la[2] && $la[0] > $la[2]) {
+        $pushSwap->ra();
+        $output[] = 'ra';
+    }
+    else if ($la[0] > $la[1] && $la[1] > $la[2]) {
+        $pushSwap->sa();
+        $output[] = 'sa';
+        $pushSwap->rra();
+        $output[] = 'rra';
+    }
+    else if ($la[0] < $la[1] && $la[1] > $la[2] && $la[0] < $la[2]) {
+        $pushSwap->sa();
+        $output[] = 'sa';
+        $pushSwap->ra();
+        $output[] = 'ra';
+    }
+    else if ($la[0] < $la[1] && $la[1] > $la[2] && $la[0] > $la[2]) {
+        $pushSwap->rra();
+        $output[] = 'rra';
     }
 }
 
